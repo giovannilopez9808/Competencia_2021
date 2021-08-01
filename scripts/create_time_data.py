@@ -15,7 +15,7 @@ swimmers = swimmers_data(parameters["path data"],
                          parameters["file data"])
 swimmers.data = clean_data(swimmers.data)
 test = test_list()
-tests = test.tests_data.keys()
+tests = test.data.keys()
 time_data = pd.DataFrame(index=swimmers.data["Nombre completo"],
                          columns=tests)
 time_data.to_csv("{}{}".format(parameters["path data"],

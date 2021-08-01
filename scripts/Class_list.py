@@ -3,32 +3,42 @@ import pandas as pd
 pd.options.mode.chained_assignment = None
 
 
+class categories_list:
+    def __init__(self):
+        self.data = {"8": [0, 8],
+                     "9-10": [9, 10],
+                     "11-12": [11, 12],
+                     "13-14": [13, 14],
+                     "15-16": [15, 16],
+                     "17-18": [17, 18]}
+
+
 class test_list:
     def __init__(self):
-        self.tests_data = {"25D": {"name": "25 metros dorso",
-                                   "time": 2},
-                           "25P": {"name": "25 metros pecho",
-                                   "time": 2},
-                           "25M": {"name": "25 metros mariposa",
-                                   "time": 2},
-                           "25L": {"name": "25 metros libre",
-                                   "time": 2},
-                           "50D": {"name": "50 metros dorso",
-                                   "time": 2},
-                           "50P": {"name": "50 metros pecho",
-                                   "time": 2},
-                           "50L": {"name": "50 metros libre",
-                                   "time": 2},
-                           "50M": {"name": "50 metros mariposa",
-                                   "time": 2},
-                           "100L": {"name": "100 metros libre",
-                                    "time": 3},
-                           "100P": {"name": "100 metros pecho",
-                                    "time": 3},
-                           "100D": {"name": "100 metros dorso",
-                                    "time": 3},
-                           "100CI": {"name": "100 metros combinado",
-                                     "time": 3}, }
+        self.data = {"25D": {"name": "25 metros dorso",
+                             "time": 2},
+                     "25P": {"name": "25 metros pecho",
+                             "time": 2},
+                     "25M": {"name": "25 metros mariposa",
+                             "time": 2},
+                     "25L": {"name": "25 metros libre",
+                             "time": 2},
+                     "50D": {"name": "50 metros dorso",
+                             "time": 2},
+                     "50P": {"name": "50 metros pecho",
+                             "time": 2},
+                     "50L": {"name": "50 metros libre",
+                             "time": 2},
+                     "50M": {"name": "50 metros mariposa",
+                             "time": 2},
+                     "100L": {"name": "100 metros libre",
+                              "time": 3},
+                     "100P": {"name": "100 metros pecho",
+                              "time": 3},
+                     "100D": {"name": "100 metros dorso",
+                              "time": 3},
+                     "100CI": {"name": "100 metros combinado",
+                               "time": 3}, }
 
 
 class swimmers_data:
@@ -36,6 +46,7 @@ class swimmers_data:
         self.path = path
         self.file = file
         self.read_data()
+        self.sorted_by_ages()
         self.obtain_complete_name()
 
     def read_data(self):
@@ -52,9 +63,13 @@ class swimmers_data:
                                                                     am,
                                                                     name)
 
+    def sorted_by_ages(self):
+        self.data = self.data.sort_values("Edad")
+
 
 class schedule_template:
-    def __init__(self, path="", test="", time="", data=pd.DataFrame()):
+    def __init__(self, path="", test="", time="", categorie="", data=pd.DataFrame()):
+        self.categorie = categorie
         self.swimmers = {}
         self.data = data
         self.path = path
@@ -94,14 +109,16 @@ class schedule_template:
     def write(self):
         file = open("{}schedule.tex".format(self.path),
                     "a")
-        file.write("\\begin{minipage}{0.95\linewidth}\n")
-        file.write("\\begin{center}\n")
+        file.write("\\begin{minipage}{0.95\linewidth}\\vspace{0.5cm} \n")
+        file.write("\\begin{flushleft}\n")
         file.write("\\textbf{\n")
+        file.write("\hspace{-0.15cm}")
         file.write("{}".format(self.test))
-        file.write("\hspace{1cm}")
-        file.write("{} hrs".format(self.time))
-        file.write("}\n")
-        file.write("\end{center}\n")
+        file.write("\hspace{1.5cm}")
+        file.write("{} hrs \\\\".format(self.time))
+        file.write("Categoria {} años".format(self.categorie))
+        file.write("}\\vspace{-0.2cm} \n")
+        file.write("\end{flushleft}\n")
         file.write("\\begin{tabular}{cp{0.63\linewidth}l}\n")
         file.write("\hline\n")
         file.write("& \\textbf{Nombre} & \\textbf{Equipo} \\\\ \hline\n")
