@@ -37,6 +37,7 @@ def write_schedule(data_heat=pd.DataFrame(), time=datetime.datetime(2000, 1, 1, 
                                      data=data_heat)
         time = obtain_hour(time,
                            test_data["time"])
+    return time
 
 
 parameters = {"path data": "../data/",
@@ -58,18 +59,18 @@ for test in tests.data:
         first_heat, heats = obtain_total_heats(data)
         index = data.index[0:first_heat]
         data_heat = data[data.index.isin(index)]
-        write_schedule(data_heat,
-                       time,
-                       categorie,
-                       parameters,
-                       test_data)
+        time = write_schedule(data_heat,
+                              time,
+                              categorie,
+                              parameters,
+                              test_data)
         for heat in range(heats):
             heat_down = (heat)*7+first_heat
             heat_up = (heat+1)*7+first_heat
             index = data.index[heat_down:heat_up]
             data_heat = data[data.index.isin(index)]
-            write_schedule(data_heat,
-                           time,
-                           categorie,
-                           parameters,
-                           test_data)
+            time = write_schedule(data_heat,
+                                  time,
+                                  categorie,
+                                  parameters,
+                                  test_data)
