@@ -2,6 +2,20 @@ from Class_list import *
 import datetime
 
 
+def obtain_first_heat_data(data=pd.DataFrame(), first_heat=4):
+    index = data.index[0:first_heat]
+    data_heat = data[data.index.isin(index)]
+    return data_heat
+
+
+def obtain_heat_data(data=pd.DataFrame(), heat=5, first_heat=4):
+    heat_down = (heat)*7+first_heat
+    heat_up = (heat+1)*7+first_heat
+    index = data.index[heat_down:heat_up]
+    data_heat = data[data.index.isin(index)]
+    return data_heat
+
+
 def obtain_swimmers_per_test(data=pd.DataFrame(), test=""):
     data_test_1 = data[data["Prueba1"] == test]
     data_test_2 = data[data["Prueba2"] == test]
@@ -57,18 +71,17 @@ for test in tests.data:
                                              categories.data[categorie])
         test_data = tests.data[test]
         first_heat, heats = obtain_total_heats(data)
-        index = data.index[0:first_heat]
-        data_heat = data[data.index.isin(index)]
+        data_heat = obtain_first_heat_data(data,
+                                           first_heat)
         time = write_schedule(data_heat,
                               time,
                               categorie,
                               parameters,
                               test_data)
         for heat in range(heats):
-            heat_down = (heat)*7+first_heat
-            heat_up = (heat+1)*7+first_heat
-            index = data.index[heat_down:heat_up]
-            data_heat = data[data.index.isin(index)]
+            data_heat = obtain_heat_data(data,
+                                         heat,
+                                         first_heat)
             time = write_schedule(data_heat,
                                   time,
                                   categorie,
