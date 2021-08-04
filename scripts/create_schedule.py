@@ -41,27 +41,27 @@ def obtain_hour(hour=datetime.datetime(2000, 1, 1, 7, 30), minutes=5):
     return hour
 
 
-def write_schedule(data_heat=pd.DataFrame(), time=datetime.datetime(2000, 1, 1, 1, 1), categorie="", parameters={}, test_data={}):
+def write_schedule(LaTeX_tamplate, data_heat=pd.DataFrame(), time=datetime.datetime(2000, 1, 1, 1, 1), categorie="", test_data={}):
     if len(data_heat):
         time_str = time.strftime("%H:%M")
-        schedule = schedule_template(path=parameters["path schedule"],
-                                     test=test_data["name"],
-                                     time=time_str,
-                                     categorie=categorie,
-                                     data=data_heat)
+        schedule = LaTeX_tamplate.write_data(test=test_data["name"],
+                                             time=time_str,
+                                             categorie=categorie,
+                                             data=data_heat)
         time = obtain_hour(time,
                            test_data["time"])
     return time
 
 
 parameters = {"path data": "../data/",
-              "path schedule": "../schedule/Files/",
+              "path schedule": "../template/Files/",
               "file data": "dummy_data.csv",
               "hour initial": 9}
 time = datetime.datetime(2020, 9, 1, 9, 0)
 swimmers = swimmers_data(parameters["path data"],
                          parameters["file data"])
 tests = test_list()
+LaTeX_template = schedule_template(parameters["path schedule"])
 categories = categories_list()
 for test in tests.data:
     data_per_test = obtain_swimmers_per_test(swimmers.data,
@@ -73,17 +73,17 @@ for test in tests.data:
         first_heat, heats = obtain_total_heats(data)
         data_heat = obtain_first_heat_data(data,
                                            first_heat)
-        time = write_schedule(data_heat,
+        time = write_schedule(LaTeX_template,
+                              data_heat,
                               time,
                               categorie,
-                              parameters,
                               test_data)
         for heat in range(heats):
             data_heat = obtain_heat_data(data,
                                          heat,
                                          first_heat)
-            time = write_schedule(data_heat,
+            time = write_schedule(LaTeX_template,
+                                  data_heat,
                                   time,
                                   categorie,
-                                  parameters,
                                   test_data)
