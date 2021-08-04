@@ -9,7 +9,7 @@ def clean_data(data=pd.DataFrame()):
 
 
 parameters = {"path data": "../data/",
-              "file data": "dummy_data.csv",
+              "file data": "data.csv",
               "file time": "time_data.csv"}
 test = test_list()
 tests = test.data.keys()

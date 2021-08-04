@@ -3,7 +3,7 @@ from functions import *
 
 parameters = {"path data": "../data/",
               "path schedule": "../template/Files/",
-              "file data": "dummy_data.csv",
+              "file data": "data.csv",
               "hour initial": 9}
 
 time = datetime.datetime(2020, 9, 1, 9, 0)
