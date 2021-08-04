@@ -13,9 +13,11 @@ git clone https://github.com/giovannilopez9808/Competencia_2021 Competencia
 #### Archivos
 
 - **create_schedule.py**:
+
   Crea el itinerario a partir de la base de datos en formato csv.
 
 - **create_time_data**:
+
   Crea el archivo donde se guardaran los resultados de la competencia en base a los datos.
 
 #### Plantilla del itinerario de las pruebas
