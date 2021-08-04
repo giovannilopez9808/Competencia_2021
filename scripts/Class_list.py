@@ -68,11 +68,30 @@ class swimmers_data:
 
 
 class schedule_template:
-    def __init__(self, path="", test="", time="", categorie="", data=pd.DataFrame()):
+    def __init__(self, path=""):
+        self.template_init = """\\begin{minipage}{0.95\linewidth}\\vspace{0.5cm}
+        \\begin{flushleft}
+        \\textbf{\n\hspace{-0.3cm} %(test)s \hspace{1cm} %(time)s hrs \\\\
+        Categoria %(categorie)s años\\\\} \\vspace{-0.2cm}
+        \end{flushleft}
+        \\begin{tabular}{cp{0.63\linewidth}l}\hline
+        & \\textbf{Nombre} & \\textbf{Equipo} \\\\ \hline
+        """
+        self.template_final = """\end{tabular}
+        \end{minipage}
+        """
+        self.path = path
+        self.create_schedule_file()
+
+    def create_schedule_file(self):
+        file = open("{}schedule.tex".format(self.path),
+                    "w")
+        file.close()
+
+    def write_data(self, test="", time="", categorie="", data=pd.DataFrame()):
         self.categorie = categorie
         self.swimmers = {}
         self.data = data
-        self.path = path
         self.test = test
         self.time = time
         self.obtain_swimmers()
@@ -107,25 +126,15 @@ class schedule_template:
         self.swimmers = sorted_swimmers
 
     def write(self):
+        data = {"test": self.test,
+                "time": self.time,
+                "categorie": self.categorie}
         file = open("{}schedule.tex".format(self.path),
                     "a")
-        file.write("\\begin{minipage}{0.95\linewidth}\\vspace{0.5cm} \n")
-        file.write("\\begin{flushleft}\n")
-        file.write("\\textbf{\n")
-        file.write("\hspace{-0.15cm}")
-        file.write("{}".format(self.test))
-        file.write("\hspace{1.5cm}")
-        file.write("{} hrs \\\\".format(self.time))
-        file.write("Categoria {} años".format(self.categorie))
-        file.write("}\\vspace{-0.2cm} \n")
-        file.write("\end{flushleft}\n")
-        file.write("\\begin{tabular}{cp{0.63\linewidth}l}\n")
-        file.write("\hline\n")
-        file.write("& \\textbf{Nombre} & \\textbf{Equipo} \\\\ \hline\n")
+        file.write(self.template_init % data)
         for index in self.swimmers:
             file.write("{} & {} & {} \\\\ \n".format(index,
                                                      self.swimmers[index]["name"],
                                                      self.swimmers[index]["team"]))
-        file.write("\end{tabular}\n")
-        file.write("\end{minipage}\n")
+        file.write(self.template_final)
         file.close()
